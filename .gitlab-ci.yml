@@ -1,0 +1,12 @@
+pages:
+  image: frankhjung/pandoc:latest
+  stage: deploy
+  script:
+    - make
+    - mv public/README.html public/index.html
+  artifacts:
+    paths:
+      - public
+  only:
+    refs:
+      - master

@@ -20,6 +20,10 @@ body {
   background: #fefefe;
 }
 
+.site-info:before {
+	content: "© Copyright Marlo 2019.";
+}
+
 a {
   color: #0645ad;
   text-decoration: none;

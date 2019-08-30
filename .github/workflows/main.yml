@@ -1,13 +1,15 @@
 name: render and publish article
 
-on: [push]
+on:
+  push:
+    paths:
+    - 'README.md'
 
 jobs:
 
   build:
 
-    name: render
-
+    name: render markdown to html
     runs-on: ubuntu-latest
 
     steps:
@@ -18,16 +20,16 @@ jobs:
           ref: refs/heads/master
           fetch-depth: 1
 
-      - name: install dependencies
-        run: sudo apt-get install make pandoc
-
       - name: render document
-        run: make
+        uses: docker://frankhjung/pandoc:latest
+        with:
+          entrypoint: /usr/bin/make
 
       - name: publish to pages
-        uses: peaceiris/actions-gh-pages@v1.1.0
+        uses: crazy-max/ghaction-github-pages@v0.4.0
         if: success()
+        with:
+          build_dir: public
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAGES_TOKEN }}
-          PUBLISH_BRANCH: gh-pages
-          PUBLISH_DIR: ./public
+
