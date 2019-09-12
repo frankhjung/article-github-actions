@@ -7,17 +7,19 @@ output:
   html_document: default
 ---
 
-Since the
+![Image from github.blog/2019-08-08-github-actions-now-supports-ci-cd](images/banner.png)
+
+In the
 [previous](https://github.com/frankhjung/article-git-pipelines/blob/master/README.md)
 article on [Git
-pipelines](https://marlo.com.au/a-short-introduction-to-git-pipelines/),
-[GitHub](https://github.com) announced a *beta* of
+pipelines](https://marlo.com.au/a-short-introduction-to-git-pipelines/), we
+mentioned that [GitHub](https://github.com) had release a *beta* of
 [Actions](https://github.com/features/actions). In this article we will take a
 quick look at some of the new features offered by Actions. We will use the same
-example of rendering this article from markdown into an HTML document. The
-example is limited but demonstrates the basics. Also, as this is a beta release
-and still in a state of flux, we will only compare this against the previous
-Azure pipeline project.
+example of rendering this article into HTML. Although this example is limited it
+does demonstrate the basic features. Since this is a *beta* release and still in
+a state of flux, we will only compare this against the previous Azure pipeline
+project.
 
 To recap, the workflow is:
 
@@ -34,9 +36,8 @@ tasks:
 1. Publish rendered HTML document to [GitHub pages](https://pages.github.com/)
 
 This differs from the previous workflow, in that we don't need to install
-dependent software. Instead we can use Docker Hub images to perform these
-Actions. We will also publish the result to GitHub pages rather than offering an
-archive to download.
+dependent software. Instead we can use prepared Docker Hub images. Also, we will
+publish the HTML to GitHub pages rather than offering an archive to download.
 
 A rendered version of this article can be found here,
 [frankhjung.github.io/article-github-actions](https://frankhjung.github.io/article-github-actions/README.html).
@@ -50,7 +51,7 @@ by the ![Actions](images/actions-tab.png) tab. When we were preparing this
 article, the job history in the Actions tab did not show until *after* we had
 published to the `master` branch.
 
-From the **Actions** tab we can view job history as well as view, edit or add
+From the Actions tab we can view job history as well as view, edit or add
 workflows:
 
 ![Actions Dashboard](images/actions-dashboard.png)
@@ -103,11 +104,11 @@ jobs:                                       # (3)
 
 There are three major sections to a workflow **(1)** - **(3)**:
 
-**(1) name**
+##### (1) name
 
 A workflow has a name. This name will appear as a title on the dashboard.
 
-**(2) on**
+##### (2) on
 
 This describes how this workflow gets triggered. There are multiple ways that a
 workflow can be triggered:
@@ -119,21 +120,21 @@ workflow can be triggered:
 Here, we are experimenting by being triggered by a push on file changes to
 `README.md`.
 
-**(3) jobs**
+##### (3) jobs
 
 Jobs contain steps for execution. The bulk of a workflow appears under this jobs
-**(3)** section. These components are explained in the following sections,
+(3) section. These components are explained in the following sections,
 **(4)-(14)**.
 
-**(4) id**
+##### (4) id
 
 Jobs are given a unique id. Here, we have labelled it `build`.
 
-**(5) name**
+##### (5) name
 
 Jobs have a name which will appear on GitHub.
 
-**(6) runs-on**
+##### (6) runs-on
 
 Jobs are
 [run](https://help.github.com/en/articles/workflow-syntax-for-github-actions#jobsjob_idruns-on)
@@ -152,7 +153,7 @@ images also must run as `root`, which could be problematic. For example,
 [Haskell Stack](https://docs.haskellstack.org) will complain when installing
 dependencies with a user of different privileges.
 
-**(7) steps**
+##### (7) steps
 
 The remainder of the job is composed of
 [Steps](https://help.github.com/en/articles/workflow-syntax-for-github-actions#jobsjob_idsteps).
@@ -163,7 +164,7 @@ or run actions. Our workflow performs three tasks named:
 1. render document
 1. publish to pages
 
-**(8) checkout**
+##### (8) checkout
 
 Previously with Azure pipeline we did only needed to specify how the pipeline
 was triggered. It was assumed that the code was already checked out. With
@@ -172,7 +173,7 @@ GitHub. The benefit is that you can finely tune how and what to checkout. In the
 example action, (8), we are performing a shallow checkout (depth of 1 commit) from
 the master branch.
 
-**(9) uses**
+##### (9) uses
 
 To perform the checkout we are using the standard [checkout
 action](https://github.com/actions/checkout). It is recommended that you specify
@@ -181,7 +182,7 @@ reviewing actions, it was helpful and instructive to view the source code to
 check whether the action provided the required features. For instance we able to
 trial three different actions to publish our content.
 
-**(10) with**
+##### (10) with
 
 Some actions require parameters. These are provide using the `with` clause. In
 this case (10) we are supplying specific checkout information. In other examples
@@ -190,13 +191,13 @@ specifying the directory location to publish, (12). Each Action can define its
 own values or defaults so it pays to read the source to determine the available
 choices for the specific version being used.
 
-**(11) using custom Docker**
+##### (11) using custom Docker
 
 Custom Docker containers can be called as Actions. In this example we are
 calling a prepared image with all the tools used for rendering this project from
 markdown to HTML.
 
-**(12) publish pages**
+##### (12) publish pages
 
 In our previous article we rendered markdown to HTML and provided it as a
 archive to download. A better solution is to publish static content to [GitHub
@@ -209,16 +210,16 @@ rendered static HTML page to the
 [gh_pages](https://github.com/frankhjung/article-github-actions/tree/gh-pages)
 branch.
 
-**(13) if**
+##### (13) if
 
 [If](https://help.github.com/en/articles/workflow-syntax-for-github-actions#jobsjob_idstepsif)
 can conditionally execute a step. The [conditional
 expression](https://help.github.com/en/articles/contexts-and-expression-syntax-for-github-actions)
-can be a boolean expression or a GitHub context. If the condition is true, the
+can be a Boolean expression or a GitHub context. If the condition is true, the
 step will execute. In our example it uses a context to check the status of the
 previous step.
 
-**(14) secrets**
+##### (14) secrets
 
 [Secrets](https://help.github.com/en/articles/virtual-environments-for-github-actions#creating-and-using-secrets-encrypted-variables)
 are encrypted environment variables. They are restricted for use in Actions.
@@ -238,7 +239,9 @@ That is not all though. As workflows are now integrated to GitHub, we can review
 jobs and even edit or add new ones:
 
 
-#### Workflow Logs
+#### Some Extras
+
+##### Workflow Logs
 
 Job runs are recorded. You can review a job by following the link from **Workflow
 runs**. This will show a run history like:
@@ -248,13 +251,14 @@ runs**. This will show a run history like:
 Each job step has logs that can be viewed and/or downloaded.
 
 
-#### Editing a Workflow
+##### Editing a Workflow
 
 GitHub provides an online editor for your workflow:
 
 ![Edit Workflow](images/actions-edit-workflow.png)
 
-However, this editor does currently not validate the workflow.
+However, this editor does not currently validate the workflow. So, why is it
+even provided as it offers nothing that normal online editing does?
 
 
 #### Our Impression
@@ -294,14 +298,14 @@ However, there are also some drawbacks:
 We further explored Actions building a [Haskell
 ](https://github.com/frankhjung/haskell-gcd) project. Our expectation was that
 having to use GitHub virtual machines to manage a workflow would be slow.
-Consider what this means for our Haskell project above. A naive first approach
+Consider what this means for our Haskell project above. A naïve first approach
 was to use a custom [Haskell
 Docker](https://cloud.docker.com/u/frankhjung/repository/docker/frankhjung/haskell)
 image which contains all required build tools. However, GitHub requires you to
 run Docker containers as `root`. This caused issues for
-[stack](https://www.haskellstack.org) when installing in project dependencies,
+[Stack](https://www.haskellstack.org) when installing in project dependencies,
 as Stack won't update your cache as `root`. Instead we were forced to install
-stack into GitHub's supplied virtual machine. And as there is no cache available
+Stack into GitHub's supplied virtual machine. And as there is no cache available
 in GitHub, this means we would need to:
 
 * Download and install Haskell Stack (unable to use custom Docker image)
