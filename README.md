@@ -313,13 +313,13 @@ in GitHub, this means we would need to:
 * Rebuild our entire project (no cache)
 * Download and run another Docker image to publish static content
 
-Surprise! Even with this compromised workflow, GitHub was still faster than the
+Surprise! Even with this longer workflow, GitHub was still faster than the
 equivalent pipeline on an alternate Git repository. The pages were also
 immediately available! On other Git repositories we have seen long delays when
 publishing pages.
 
 There are some good features to GitHub Actions which are easily composed. While
-JavaScript is not the fist tool we would consider as a workflow language, Docker
+JavaScript is not the first tool we would consider as a workflow language, Docker
 is very workable compromise, even with a small performance hit.
 
 
