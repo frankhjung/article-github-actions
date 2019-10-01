@@ -13,7 +13,7 @@ In the
 [previous](https://github.com/frankhjung/article-git-pipelines/blob/master/README.md)
 article on [Git
 pipelines](https://marlo.com.au/a-short-introduction-to-git-pipelines/), we
-mentioned that [GitHub](https://github.com) had release a *beta* of
+mentioned that [GitHub](https://github.com) had released a *beta* of
 [Actions](https://github.com/features/actions). In this article we will take a
 quick look at some of the new features offered by Actions. We will use the same
 example of rendering this article into HTML. Although this example is limited it
