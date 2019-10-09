@@ -11,14 +11,15 @@ output:
 
 # Introduction
 
-In our [earlier article on Git pipelines](https://marlo.com.au/a-short-introduction-to-git-pipelines/), we
+In our [earlier article on Git
+pipelines](https://marlo.com.au/a-short-introduction-to-git-pipelines/), we
 mentioned that [GitHub](https://github.com) had released a *beta* of
 [Actions](https://github.com/features/actions), their latest CI/CD workflow
 automation tool. Let's take a quick look at some of its features.
 
-For simplicity, we'll use the same example as in the previous article -
-that of rendering this article into HTML - which is more than enough to 
-demonstrate the basic features. 
+For simplicity, we'll use the same example as in the previous article - that of
+rendering this article into HTML - which is more than enough to demonstrate the
+basic features.
 
 To recap, the workflow for Git pipelines was:
 
@@ -28,23 +29,23 @@ To recap, the workflow for Git pipelines was:
 1. Render the HTML document from Markdown
 1. Archive HTML document
 
-The Actions based workflow is similar, but quite a bit simpler. It performs the 
+The Actions based workflow is similar, but quite a bit simpler. It performs the
 following tasks:
 
 1. Get latest commit in the repository
 1. Render the HTML document from Markdown
 1. Publish the rendered HTML document to [GitHub pages](https://pages.github.com/)
 
-It's simpler, because we don't need to install
-the dependent software - we can use pre-prepared Docker Hub images instead.
+It's simpler, because we don't need to install the dependent software - we can
+use pre-prepared Docker Hub images instead.
 
 
 # What are GitHub Actions?
 
 Actions introduce integrated pipelines called *workflows* into a GitHub
 repository. That means we can access workflows directly from GitHub's dashboard
-via the ![Actions](images/actions-tab.png) tab. (Note that when we were 
-preparing this article, the job history in the Actions tab did not show until 
+via the ![Actions](images/actions-tab.png) tab. (Note that when we were
+preparing this article, the job history in the Actions tab did not show until
 *after* we had published to the `master` branch.)
 
 From the Actions tab we can view job history as well as view, edit or add
@@ -154,7 +155,7 @@ dependencies with a user of different privileges.
 The remainder of the job is composed of
 [Steps](https://help.github.com/en/articles/workflow-syntax-for-github-actions#jobsjob_idsteps).
 Steps are the workhorse of workflows. Steps can run set-up tasks, run commands
-or run actions. Our workflow performs three *named* tasks: 
+or run actions. Our workflow performs three *named* tasks:
 
 1. shallow checkout
 1. render document
@@ -232,13 +233,13 @@ Pages](https://help.github.com/en/categories/github-pages-basics). See (12).
 We now have all the pieces in place to execute our workflow that will:
 
 1.  Invoke an action to perform a shallow checkout of our repository from the `master` branch
-1.  Render the markdown using a custom Action from our own 
+1.  Render the markdown using a custom Action from our own
     [pandoc Docker](https://cloud.docker.com/u/frankhjung/repository/docker/frankhjung/pandoc)
     container
 1.  Use a public Action to publish the static HTML to [GitHub pages](https://frankhjung.github.io/article-github-actions/README.html)
 
-That is not all though. As workflows are now integrated to GitHub, we can review
-jobs and even edit or add new ones.
+Workflows are integrated into GitHub unlike the previous Azure pipelines. A big
+relief!
 
 
 # Some Extras
@@ -262,11 +263,10 @@ GitHub provides an online editor for your workflow:
 However, this editor does not currently validate the workflow. So, why is it
 even provided as it offers nothing that normal online editing doesn't?
 
-
 ## First Impressions
 
-Our first impression of actions is that they are a significant improvement over the
-former Azure pipelines. Features we particularly like are:
+Our first impression of GitHub Actions is that they are a significant
+improvement over the former Azure pipelines. Features we particularly like are:
 
 * Actions are well integrated into GitHub
 * There's an active [marketplace](https://github.com/marketplace) for
@@ -282,47 +282,27 @@ However, there are also some drawbacks:
 
 * There is no cache between jobs. The current recommended practice is to archive
   the required data, and then restore the archive on the required job.
-  To do this you will require to execute Actions.
-* Actions can be invoked by running a Docker container, and those containers can
-  be pulled from remote sources. However, the recommended practice is to 
-  [write actions in JavaScript](https://help.github.com/en/articles/about-actions#types-of-actions)
+  To do this you will require to execute Actions. Having a local cache is really
+  important for projects like Java that have many dependencies. No cache means
+  downloading each and every build!
+* The recommended practice is to [write actions in
+  JavaScript](https://help.github.com/en/articles/about-actions#types-of-actions)
   since these actions are performed on the GitHub host, and do not need to be
-  pulled from external sources. But JavaScript is not the first choice of 
-  language DevOps would use to build workflow pipelines. Will GitHub Actions 
-  support other languages in the future?
-* Docker Actions are of variable quality. We spent time experimenting with
-  different variations until we found those that matched our requirements. As
-  the source code is available it was easy to evaluate an Actions
-  implementation. Or, you could simply write your own following these
-  [instructions](https://help.github.com/en/articles/building-actions). We also
-  found that we could use our existing Docker images without modification.
+  pulled from external sources. Really? JavaScript? I find that choice bizarre.
+  JavaScript is not the first choice of language DevOps would use to build
+  workflow pipelines. Will GitHub Actions support other languages in the future?
 
-We further explored Actions building a [Haskell
-](https://github.com/frankhjung/haskell-gcd) project. Our expectation was that
-having to use GitHub virtual machines to manage a workflow would be slow.
-Consider what this means for our Haskell project above. A naïve first approach
-was to use a custom [Haskell
-Docker](https://cloud.docker.com/u/frankhjung/repository/docker/frankhjung/haskell)
-image which contains all required build tools. However, GitHub requires you to
-run Docker containers as `root`. This caused issues for
-[Stack](https://www.haskellstack.org) when installing in project dependencies,
-as Stack won't update your cache as `root`. Instead we were forced to install
-Stack into GitHub's supplied virtual machine. And as there is no cache available
-in GitHub, this means we would need to:
-
-* Download and install Haskell Stack (unable to use custom Docker image)
-* Download and recompile all dependencies (no cache)
-* Rebuild our entire project (no cache)
-* Download and run another Docker image to publish static content
-
-Surprise! Even with this longer workflow, GitHub was still faster than the
-equivalent pipeline on an alternate Git repository. The pages were also
-immediately available! On other Git repositories we have seen long delays when
-publishing pages.
+We also found Docker Actions available on the
+[marketplace](https://github.com/marketplace) are of variable quality. We spent
+time experimenting with different variations until we found those that matched
+our requirements. As the source code is available it was easy to evaluate an
+Actions implementation. Or, you could simply write your own following these
+[instructions](https://help.github.com/en/articles/building-actions). We also
+found that we could use our existing Docker images without modification. 
 
 There are some good features to GitHub Actions which are easily composed. While
 JavaScript is not the first tool we would consider as a workflow language, Docker
-is very workable compromise, even with a small performance hit.
+is very workable compromise, even with the small performance hit.
 
 
 #### Resources
