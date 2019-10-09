@@ -117,14 +117,13 @@ workflow can be triggered:
 1. on push or pull request on a path
 1. on a [schedule](https://help.github.com/en/articles/workflow-syntax-for-github-actions#onschedule)
 
-Here, we are experimenting by being triggered by a push on file changes to
+Here, we are experimenting with being triggered by a push on file changes to
 `README.md`.
 
 ##### (3) jobs
 
-Jobs contain steps for execution. The bulk of a workflow appears under this jobs
-(3) section. These components are explained in the following sections,
-**(4)-(14)**.
+Jobs contain steps for execution. The bulk of a jobs workflow appears under
+section (3). These are explained in sections **(4)** to **(14)** below.
 
 ##### (4) id
 
@@ -138,9 +137,10 @@ Jobs have a name which will appear on GitHub.
 
 Jobs are
 [run](https://help.github.com/en/articles/workflow-syntax-for-github-actions#jobsjob_idruns-on)
-on GitHub hosted virtual machine images. The choices support these three
-principle [virtual
-environments](https://help.github.com/en/articles/virtual-environments-for-github-actions):
+on GitHub hosted virtual machine images. The current choices offer these three
+[virtual
+environments](https://help.github.com/en/articles/virtual-environments-for-github-actions)
+types:
 
   1. `Ubuntu`
   1. `Windows Server`
@@ -148,7 +148,7 @@ environments](https://help.github.com/en/articles/virtual-environments-for-githu
 
 Apart from `latest` there are a choice of versions for each virtual environment.
 The limitation here is that you must use one of these images. If you are
-invoking Docker based Actions, then you must use a Linux image. These Docker
+invoking Docker based Actions, then you *must* use a Linux image. These Docker
 images also must run as `root`, which could be problematic. For example,
 [Haskell Stack](https://docs.haskellstack.org) will complain when installing
 dependencies with a user of different privileges.
@@ -157,8 +157,8 @@ dependencies with a user of different privileges.
 
 The remainder of the job is composed of
 [Steps](https://help.github.com/en/articles/workflow-syntax-for-github-actions#jobsjob_idsteps).
-Steps are the workhorse of workflows. Steps can run setup tasks, run commands
-or run actions. Our workflow performs three tasks named:
+Steps are the workhorse of workflows. Steps can run set-up tasks, run commands
+or run actions. Our workflow performs three *named* tasks: 
 
 1. shallow checkout
 1. render document
@@ -166,30 +166,34 @@ or run actions. Our workflow performs three tasks named:
 
 ##### (8) checkout
 
-Previously with Azure pipeline we did only needed to specify how the pipeline
-was triggered. It was assumed that the code was already checked out. With
-Actions this step is explicit. We need to invoke an action to checkout from
+Previously with Azure pipeline we only needed to specify how the pipeline was
+triggered. It was assumed that the code was already checked out. With Actions
+this step is explicit. That is, we need to invoke an action to checkout from
 GitHub. The benefit is that you can finely tune how and what to checkout. In the
-example action, (8), we are performing a shallow checkout (depth of 1 commit) from
-the master branch.
+example action, (8), we are performing a shallow checkout (depth of 1 commit)
+from the master branch.
 
 ##### (9) uses
 
 To perform the checkout we are using the standard [checkout
 action](https://github.com/actions/checkout). It is recommended that you specify
-a specific version (rather than a general tag like `@latest`. When we were
-reviewing actions, it was helpful and instructive to view the source code to
-check whether the action provided the required features. For instance we able to
-trial three different actions to publish our content.
+a specific version instead of a generic tag like `@latest`.
+
+When we were reviewing actions, it was helpful and instructive to view the
+source code to check whether the action provided the required features. For
+instance, we were able to trial three different actions to publish content,
+before settling on the current solution.
 
 ##### (10) with
 
 Some actions require parameters. These are provide using the `with` clause. In
-this case (10) we are supplying specific checkout information. In other examples
-(11), we are overriding the default entry point of the Docker container, or
-specifying the directory location to publish, (12). Each Action can define its
-own values or defaults so it pays to read the source to determine the available
-choices for the specific version being used.
+this case, (10) we are supplying specific checkout options.
+
+Each Action can define its own values or defaults so it pays to read the source
+to determine the available choices for the specific version being used.
+
+In other examples (11), we are overriding the default entry point of the Docker
+container, or specifying the directory location to publish, (12).
 
 ##### (11) using custom Docker
 
@@ -199,14 +203,14 @@ markdown to HTML.
 
 ##### (12) publish pages
 
-In our previous article we rendered markdown to HTML and provided it as a
+In our previous article we rendered markdown to HTML and provided it as an
 archive to download. A better solution is to publish static content to [GitHub
 Pages](https://pages.github.com/). This required the creation of an access token
 which is nicely described
 [here](https://help.github.com/en/enterprise/user/articles/creating-a-personal-access-token-for-the-command-line).
-This token is then added to the project as a **Secret** under **Settings**. The
-token `GH_PAGES_TOKEN` is passed to the action so it is able to publish the
-rendered static HTML page to the
+This token is added to the project as a **Settings > Secret** named
+`GH_PAGES_TOKEN`. This token is passed to the action so it is able to publish
+the rendered static HTML page to the
 [gh_pages](https://github.com/frankhjung/article-github-actions/tree/gh-pages)
 branch.
 
@@ -224,12 +228,12 @@ previous step.
 [Secrets](https://help.github.com/en/articles/virtual-environments-for-github-actions#creating-and-using-secrets-encrypted-variables)
 are encrypted environment variables. They are restricted for use in Actions.
 Here, we store the token required to publish to [GitHub
-Pages](https://help.github.com/en/categories/github-pages-basics).
+Pages](https://help.github.com/en/categories/github-pages-basics). See (12).
 
 
 #### Putting it all together
 
-We now have all the pieces in place to execute a workflow that will:
+We now have all the pieces in place to execute our workflow that will:
 
 1.  Invoke an action to perform a shallow checkout of our repository from the `master` branch
 1.  Render the markdown using a custom Action from our own [pandoc Docker](https://cloud.docker.com/u/frankhjung/repository/docker/frankhjung/pandoc) container
