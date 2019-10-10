@@ -10,3 +10,4 @@ pages:
   only:
     refs:
       - master
+      - /^feature\/*/

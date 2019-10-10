@@ -1,8 +1,14 @@
 ---
 title: 'GitHub Actions - First Impressions'
 author: '[frank.jung@marlo.com.au](mailto:frank.jung@marlo.com.au)'
-footer: '© Marlo 2019.'
-date: '29 August 2019'
+date: '10 October 2019'
+header-includes:
+  - \usepackage{fancyhdr}
+  - \usepackage{graphicx}
+  - \usepackage[headheight=30mm,includehead]{geometry}
+  - \pagestyle{fancy}
+  - \fancyhead[L]{\includegraphics[height=15mm]{images/themarlogroup.png}}
+  - \fancyfoot[L]{© The Marlo Group 2019}
 output:
   html_document: default
 ---
