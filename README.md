@@ -288,8 +288,8 @@ However, there are also some drawbacks:
 * The recommended practice is to [write actions in
   JavaScript](https://help.github.com/en/articles/about-actions#types-of-actions)
   since these actions are performed on the GitHub host, and do not need to be
-  pulled from external sources. Really? JavaScript? I find that choice bizarre.
-  JavaScript is not the first choice of language DevOps would use to build
+  pulled from external sources. Really? JavaScript? It seems like a bizarre choice -
+  JavaScript is not the first language DevOps would turn to when building
   workflow pipelines. Will GitHub Actions support other languages in the future?
 
 We also found Docker Actions available on the
