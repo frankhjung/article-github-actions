@@ -1,3 +1,5 @@
+---
+
 pages:
   image: frankhjung/pandoc:latest
   stage: deploy

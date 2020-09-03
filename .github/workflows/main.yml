@@ -1,9 +1,13 @@
+---
+
 name: render and publish article
 
 on:
   push:
     paths:
-    - 'README.md'
+      - 'README.md'
+  schedule:
+    - cron: '* * */10 * *'
 
 jobs:
 
@@ -32,4 +36,3 @@ jobs:
           build_dir: public
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAGES_TOKEN }}
-
