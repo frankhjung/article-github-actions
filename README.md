@@ -238,14 +238,14 @@ Pages](https://help.github.com/en/categories/github-pages-basics). See (12).
 
 We now have all the pieces in place to execute our workflow that will:
 
-1.  Invoke an action to perform a shallow checkout of our repository from the `master` branch
-1.  Render the markdown using a custom Action from our own
-    [pandoc Docker](https://cloud.docker.com/u/frankhjung/repository/docker/frankhjung/pandoc)
-    container
-1.  Use a public Action to publish the static HTML to [GitHub pages](https://frankhjung.github.io/article-github-actions/README.html)
+1. Invoke an action to perform a shallow checkout of our repository from the `master` branch
+1. Render the markdown using a custom Action from our own
+   [pandoc Docker](https://cloud.docker.com/u/frankhjung/repository/docker/frankhjung/pandoc)
+   container
+1. Use a public Action to publish the static HTML to [GitHub pages](https://frankhjung.github.io/article-github-actions/README.html)
 
-Workflows are integrated into GitHub unlike the previous Azure pipelines. A big
-relief!
+Workflows are integrated into GitHub unlike the previous Azure pipelines. This
+is a big relief.
 
 
 # Some Extras
@@ -290,7 +290,7 @@ However, there are also some drawbacks:
   the required data, and then restore the archive on the required job.
   To do this you will require to execute Actions. Having a local cache is really
   important for projects like Java that have many dependencies. No cache means
-  downloading each and every build!
+  downloading on every build!
 * The recommended practice is to [write actions in
   JavaScript](https://help.github.com/en/articles/about-actions#types-of-actions)
   since these actions are performed on the GitHub host, and do not need to be
@@ -308,7 +308,7 @@ found that we could use our existing Docker images without modification.
 
 There are some good features to GitHub Actions which are easily composed. While
 JavaScript is not the first tool we would consider as a workflow language, Docker
-is very workable compromise, even with the small performance hit.
+is workable compromise, even with the small performance hit.
 
 
 #### Resources
