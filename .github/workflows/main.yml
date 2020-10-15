@@ -4,8 +4,8 @@ name: render and publish article
 
 on:
   push:
-    paths:
-      - 'README.md'
+    branches:
+      - master
   schedule:
     - cron: '* * */10 * *'
 
