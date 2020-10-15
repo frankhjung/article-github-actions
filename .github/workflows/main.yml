@@ -30,7 +30,7 @@ jobs:
           entrypoint: /usr/bin/make
 
       - name: publish to pages
-        uses: crazy-max/ghaction-github-pages@v0.4.0
+        uses: crazy-max/ghaction-github-pages@v2.1.3
         if: success()
         with:
           build_dir: public

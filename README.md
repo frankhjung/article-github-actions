@@ -66,7 +66,7 @@ workflows:
 define the automation steps of a pipeline. Workflows are stored in the
 `.github/workflows` directory at the root of your project. A workflow has one or
 more jobs that contains a sequence of tasks called *steps*. As an example, lets
-work through this project's workflow, which is defined in the yaml file below:
+work through this project's workflow, which is defined in the YAML file below:
 
 ```yaml
 name: render and publish article            # (1) name
