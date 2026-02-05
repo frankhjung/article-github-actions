@@ -1,38 +1,39 @@
 ---
-
-name: render and publish article
+name: publish article
 
 on:
   push:
     branches:
       - master
-  schedule:
-    - cron: '* * */10 * *'
+
+permissions:
+  pages: write
+  id-token: write
 
 jobs:
-
   build:
-
-    name: render markdown to html
+    name: publish article to pages
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-
       - name: shallow checkout
-        uses: actions/checkout@v1.0.0
+        uses: actions/checkout@v4
         with:
-          ref: refs/heads/master
           fetch-depth: 1
 
-      - name: render document
-        uses: docker://frankhjung/pandoc:latest
+      - name: build with pandoc
+        uses: docker://frankhjung/pandoc:3.1.11.1
         with:
-          entrypoint: /usr/bin/make
+          args: make
 
-      - name: publish to pages
-        uses: crazy-max/ghaction-github-pages@v2.1.3
-        if: success()
+      - name: upload pages artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          build_dir: public
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAGES_TOKEN }}
+          path: public
+
+      - name: deploy to pages
+        id: deployment
+        uses: actions/deploy-pages@v4
